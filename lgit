@@ -2,8 +2,7 @@
 
 MENU=$(gum choose "Full" "Commit" "Push");
 
-if [ $MENU=="Full" ]
-then
+if [ "$MENU" = "Full" ]; then
 	{
 		git add *
 		TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
@@ -12,9 +11,9 @@ then
 		BRANCH=$(gum input --value "" --placeholder "origin master")
 		gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
 	}
-elif [ $MENU=="Commit" ]
-then
+elif [ "$MENU" = "Commit" ]; then
 	{
+		git add *
 		TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
 		SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
 		gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
