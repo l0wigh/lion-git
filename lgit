@@ -25,7 +25,7 @@ main() {
 			gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
 			main
 		}
-	elif [ "$MENU" = "Push"]; then
+	elif [ "$MENU" = "Push" ]; then
 		{
 			BRANCH=$(gum input --value "" --placeholder "origin master")
 			gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
