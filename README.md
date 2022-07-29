@@ -2,7 +2,7 @@
 
 Little Git helper made with [Gum](https://github.com/charmbracelet/gum)
 
-It can commit and push.
+It can git init, git remote add, git commit, git push.
 
 Yes, it's a just the gum tutorial, tweaked for me. And ?
 
@@ -12,10 +12,10 @@ Yes, it's a just the gum tutorial, tweaked for me. And ?
 
 -	Git clone lion-git
 
--	Add it to your PATH
+-	Add ```lgit``` to your PATH
 
 -	Profit ?
 
-## Todos
+## TODOS
 
-- [ ] Anything I'll need to add / change
+-	[ ] Better UI
