@@ -15,6 +15,7 @@ main() {
 					git remote add $ORIGIN $REMOTE
 				}
 			fi
+			main
 		}
 	elif [ "$MENU" = "Commit" ]; then
 		{
@@ -22,11 +23,13 @@ main() {
 			TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
 			SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
 			gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
+			main
 		}
 	elif [ "$MENU" = "Push"]; then
 		{
 			BRANCH=$(gum input --value "" --placeholder "origin master")
 			gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
+			main
 		}
 	else
 		{
