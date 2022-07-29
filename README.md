@@ -6,16 +6,16 @@ It can commit and push.
 
 Yes, it's a just the gum tutorial, tweaked for me. And ?
 
-# How it works ?
+## How it works ?
 
-	- Install gum to your system.
+-	Install gum to your system.
 
-	- Git clone lion-git
+-	Git clone lion-git
 
-	- Add it to your PATH
+-	Add it to your PATH
 
-	- Profit ?
+-	Profit ?
 
-# Todos
+## Todos
 
-	- [ ] Anything I'll need to add / change
+- [ ] Anything I'll need to add / change
