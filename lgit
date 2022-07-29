@@ -28,7 +28,7 @@ main() {
 	elif [ "$MENU" = "Push" ]; then
 		{
 			BRANCH=$(gum input --value "origin master" --placeholder "Remote name and Branch")
-			gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
+			gum confirm "Push changes to $BRANCH ?" && gum spin -s points --title "Pushing to $BRANCH" -- git push -u $BRANCH
 			main
 		}
 	else
