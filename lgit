@@ -7,11 +7,11 @@ main() {
 	if [ "$MENU" = "New" ]; then
 		{
 			git init
-			gum confirm "Add a remote ?" && $REMOTE="YES" || $REMOTE="NO"
+			gum confirm "Add a remote ?" && REMOTE="YES" || REMOTE="NO"
 			if [ $REMOTE = "YES" ]; then
 				{
-					$ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo");
-					$REMOTE=$(gum input --value "" --placeholder "Link to remote repo");
+					ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo");
+					REMOTE=$(gum input --value "" --placeholder "Link to remote repo");
 					git remote add $ORIGIN $REMOTE
 				}
 			fi
