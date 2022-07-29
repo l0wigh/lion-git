@@ -1,26 +1,38 @@
 #!/bin/sh
 
-MENU=$(gum choose "Full" "Commit" "Push");
 
-if [ "$MENU" = "Full" ]; then
-	{
-		git add *
-		TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
-		SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
-		gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
-		BRANCH=$(gum input --value "" --placeholder "origin master")
-		gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
-	}
-elif [ "$MENU" = "Commit" ]; then
-	{
-		git add *
-		TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
-		SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
-		gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
-	}
-else
-	{
-		BRANCH=$(gum input --value "" --placeholder "origin master")
-		gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
-	}
-fi
+main() {
+	MENU=$(gum choose "New" "Commit" "Push" "Exit");
+
+	if [ "$MENU" = "New" ]; then
+		{
+			git init
+			gum confirm "Add a remote ?" && $REMOTE="YES" || $REMOTE="NO"
+			if [ $REMOTE = "YES" ]; then
+				{
+					$ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo");
+					$REMOTE=$(gum input --value "" --placeholder "Link to remote repo");
+					git remote add $ORIGIN $REMOTE
+				}
+			fi
+		}
+	elif [ "$MENU" = "Commit" ]; then
+		{
+			git add *
+			TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
+			SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
+			gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
+		}
+	elif [ "$MENU" = "Push"]; then
+		{
+			BRANCH=$(gum input --value "" --placeholder "origin master")
+			gum confirm "Push changes to $BRANCH ?" && git push -u $BRANCH
+		}
+	else
+		{
+			exit
+		}
+	fi
+}
+
+main
