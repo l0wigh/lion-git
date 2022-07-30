@@ -1,8 +1,9 @@
 #!/bin/sh
 
+# INSTYLE="--prompt=\"🦁 >\""
 
 main() {
-	MENU=$(gum choose "New" "Commit" "Push" "Exit");
+	MENU=$(gum choose "New" "Commit" "Push" "Exit" --cursor="🦁 " --item.foreground 49);
 
 	if [ "$MENU" = "New" ]; then
 		{
@@ -10,8 +11,8 @@ main() {
 			gum confirm "Add a remote ?" && REMOTE="YES" || REMOTE="NO"
 			if [ $REMOTE = "YES" ]; then
 				{
-					ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo");
-					REMOTE=$(gum input --value "" --placeholder "Link to remote repo");
+					ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo" --prompt="🦁 > ");
+					REMOTE=$(gum input --value "" --placeholder "Link to remote repo" --prompt="🦁 > ");
 					git remote add $ORIGIN $REMOTE
 				}
 			fi
@@ -20,14 +21,14 @@ main() {
 	elif [ "$MENU" = "Commit" ]; then
 		{
 			gum confirm "Use Git Add * ?" && git add *
-			TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean")
-			SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message")
+			TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean" --cursor="🦁 " --item.foreground 49)
+			SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message" --prompt="🦁 > ")
 			gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
 			main
 		}
 	elif [ "$MENU" = "Push" ]; then
 		{
-			BRANCH=$(gum input --value "origin master" --placeholder "Remote name and Branch")
+			BRANCH=$(gum input --value "origin master" --placeholder "Remote name and Branch" --prompt="🦁 > ")
 			gum confirm "Push changes to $BRANCH ?" && gum spin -s points --title "Pushing to $BRANCH" -- git push -u $BRANCH
 			main
 		}
@@ -37,5 +38,7 @@ main() {
 		}
 	fi
 }
+
+gum style --foreground 49 --border-foreground 212 --border rounded --align center --padding "0 1" 'Lion Git 0.1'
 
 main
