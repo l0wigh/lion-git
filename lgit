@@ -2,34 +2,46 @@
 
 # INSTYLE="--prompt=\"🦁 >\""
 
+new() {
+	git init
+	gum confirm "Add a remote ?" && REMOTE="YES" || REMOTE="NO"
+	if [ $REMOTE = "YES" ]; then
+		{
+			ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo" --prompt="🦁 > ");
+			REMOTE=$(gum input --value "" --placeholder "Link to remote repo" --prompt="🦁 > ");
+			git remote add $ORIGIN $REMOTE
+		}
+	fi
+}
+
+commit() {
+	gum confirm "Use Git Add * ?" && git add *
+	TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean" --cursor="🦁 " --item.foreground 49)
+	SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message" --prompt="🦁 > ")
+	gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
+}
+
+push() {
+	BRANCH=$(gum input --value "origin master" --placeholder "Remote name and Branch" --prompt="🦁 > ")
+	gum confirm "Push changes to $BRANCH ?" && gum spin -s points --title "Pushing to $BRANCH" -- git push -u $BRANCH
+}
+
 main() {
 	MENU=$(gum choose "New" "Commit" "Push" "Exit" --cursor="🦁 " --item.foreground 49);
 
 	if [ "$MENU" = "New" ]; then
 		{
-			git init
-			gum confirm "Add a remote ?" && REMOTE="YES" || REMOTE="NO"
-			if [ $REMOTE = "YES" ]; then
-				{
-					ORIGIN=$(gum input --value "origin" --placeholder "Name of the remote repo" --prompt="🦁 > ");
-					REMOTE=$(gum input --value "" --placeholder "Link to remote repo" --prompt="🦁 > ");
-					git remote add $ORIGIN $REMOTE
-				}
-			fi
+			new
 			main
 		}
 	elif [ "$MENU" = "Commit" ]; then
 		{
-			gum confirm "Use Git Add * ?" && git add *
-			TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean" --cursor="🦁 " --item.foreground 49)
-			SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message" --prompt="🦁 > ")
-			gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
+			commit
 			main
 		}
 	elif [ "$MENU" = "Push" ]; then
 		{
-			BRANCH=$(gum input --value "origin master" --placeholder "Remote name and Branch" --prompt="🦁 > ")
-			gum confirm "Push changes to $BRANCH ?" && gum spin -s points --title "Pushing to $BRANCH" -- git push -u $BRANCH
+			push
 			main
 		}
 	else
@@ -39,6 +51,37 @@ main() {
 	fi
 }
 
-gum style --foreground 49 --border-foreground 212 --border rounded --align center --padding "0 1" 'Lion Git 0.1'
+selecting() {
+	if [ "$*" = "new" ]; then
+		new
+	elif [ "$*" = "commit" ]; then
+		commit
+	elif [ "$*" = "push" ]; then
+			push
+	else
+		echo "Commands : "
+		echo "new"
+		echo "commit"
+		echo "push"
+	fi
+}
 
-main
+
+if [ $# = 0 ]; then
+	{
+		gum style --foreground 49 --border-foreground 212 --border rounded --align center --padding "0 1" 'Lion Git 0.1'
+		main
+	}
+elif [ $# = 1 ]; then
+	selecting $*
+else
+	{
+		echo "Usage : lgit"
+		echo "Or    : lgit <git command>"
+		echo ""
+		echo "Commands : "
+		echo "new"
+		echo "commit"
+		echo "push"
+	}
+fi
