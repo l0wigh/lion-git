@@ -15,7 +15,7 @@ new() {
 }
 
 commit() {
-	gum confirm "Use Git Add * ?" && git add *
+	gum confirm "Use Git Add * ?" && git add -A *
 	TYPE=$(gum choose "🩹 Fix" "⚡ Feat" "📘 Docs" "💄 Style" "🪄 Refactor" "🔧 Test" "❌ Revert" "🧼 Clean" --cursor="🦁 " --item.foreground 49)
 	SUMMARY=$(gum input --value "$TYPE: " --placeholder "Commit Message" --prompt="🦁 > ")
 	gum confirm "Commit changes ?" && git commit -m "$SUMMARY"
