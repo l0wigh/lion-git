@@ -26,12 +26,22 @@ push() {
 	gum confirm "Push changes to $BRANCH ?" && gum spin -s points --title "Pushing to $BRANCH" -- git push -u $BRANCH
 }
 
+grm() {
+	REMOVING=$(gum input --placeholder "Files to remove" --prompt="🦁 > ")
+	git rm $REMOVING
+}
+
 main() {
-	MENU=$(gum choose "New" "Commit" "Push" "Exit" --cursor="🦁 " --item.foreground 49);
+	MENU=$(gum choose "New" "Remove" "Commit" "Push" "Exit" --cursor="🦁 " --item.foreground 49);
 
 	if [ "$MENU" = "New" ]; then
 		{
 			new
+			main
+		}
+	elif [ "$MENU" = "Remove" ]; then
+		{
+			grm
 			main
 		}
 	elif [ "$MENU" = "Commit" ]; then
@@ -54,6 +64,8 @@ main() {
 selecting() {
 	if [ "$*" = "new" ]; then
 		new
+	elif [ "$*" = "rm" ]; then
+		grm
 	elif [ "$*" = "commit" ]; then
 		commit
 	elif [ "$*" = "push" ]; then
@@ -61,6 +73,7 @@ selecting() {
 	else
 		echo "Commands : "
 		echo "new"
+		echo "rm"
 		echo "commit"
 		echo "push"
 	fi
@@ -81,6 +94,7 @@ else
 		echo ""
 		echo "Commands : "
 		echo "new"
+		echo "rm"
 		echo "commit"
 		echo "push"
 	}
